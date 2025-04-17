@@ -1,1 +1,4 @@
 zig build run
+zig build --prefix out
+zig test src/main.zig
+zig build run --watch --summary failures -fincremental
