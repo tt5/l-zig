@@ -30,6 +30,12 @@ pub fn main() !void {
         std.debug.print("slice elem: {c}\n", .{v});
     }
 
+    var data = [_]u8{ 1, 2, 3};
+    for (&data) |*v| {
+        v.* +=1;
+    }
+    std.debug.print("data: {} {} {}\n", .{data[0], data[1], data[2]});
+
     const binary: u8 = 0b00000001;
     std.debug.print("{}\n", .{binary});
 
