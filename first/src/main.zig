@@ -9,6 +9,14 @@ fn fibonacci(n: u16) u16 {
 
 pub fn main() !void {
 
+    const allocator = std.heap.page_allocator;
+    const ArrayList = std.ArrayList;
+    var list = ArrayList(u8).init(allocator);
+    defer list.deinit();
+    try list.append('A');
+    try list.appendSlice("bc");
+    std.debug.print("{s}\n", .{list.items});
+
     defer std.debug.print("{}\n", .{fibonacci(10)});
     std.debug.print("hello2 {s}\n", .{foo.bar});
 
