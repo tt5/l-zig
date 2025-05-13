@@ -17,6 +17,31 @@ pub fn main() !void {
     try list.appendSlice("bc");
     std.debug.print("{s}\n", .{list.items});
 
+    const bytes_written = try list.writer().write(
+            "hello"
+        );
+    std.debug.print("{d} {any}\n", .{bytes_written, list.items});
+
+    const stdout = std.io.getStdOut();
+    try stdout.writer().print(
+        "stdout\n", .{}
+        );
+
+    const Place = struct { lat: f32, long: f32 };
+
+    const parsed = try std.json.parseFromSlice(
+        Place,
+        allocator,
+        \\{ "lat": 40.6, "long": -74.4}
+        , .{}
+    );
+    defer parsed.deinit();
+    const place = parsed.value;
+    std.debug.print("place: {d}\n", .{place.lat});
+    try std.json.stringify(place, .{}, list.writer());
+    std.debug.print("{s}\n", .{list.items});
+
+
     defer std.debug.print("{}\n", .{fibonacci(10)});
     std.debug.print("hello2 {s}\n", .{foo.bar});
 
