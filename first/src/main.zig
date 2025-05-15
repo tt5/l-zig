@@ -41,6 +41,28 @@ pub fn main() !void {
     try std.json.stringify(place, .{}, list.writer());
     std.debug.print("{s}\n", .{list.items});
 
+    const allocator2 = std.heap.page_allocator;
+    const Point = struct { x: i32, y: i32 };
+
+    //var map = std.StringHashMap(enum { cool, uncool }).init(
+    var map = std.AutoHashMap(u32, Point).init(
+        allocator2,
+    );
+    defer map.deinit();
+
+    try map.put(1525, .{ .x = 1, .y = -4 });
+    try map.put(1550, .{ .x = 2, .y = -3 });
+    const old = try map.fetchPut(1550, .{ .x = 3, .y = -3 });
+
+    var sum = Point{ .x = 0, .y = 0 };
+    var iterator = map.iterator();
+
+    while (iterator.next()) |entry| {
+        sum.x += entry.value_ptr.x;
+        sum.y += entry.value_ptr.y;
+    }
+
+    std.debug.print("hashmap: {any} {any} old: {any}\n", .{sum.x, sum.y, old});
 
     defer std.debug.print("{}\n", .{fibonacci(10)});
     std.debug.print("hello2 {s}\n", .{foo.bar});
@@ -63,7 +85,8 @@ pub fn main() !void {
         std.debug.print("slice elem: {c}\n", .{v});
     }
 
-    var data = [_]u8{ 1, 2, 3};
+    var data = [_]u8{ 3, 1, 2};
+    std.mem.sort(u8, &data, {}, std.sort.asc(u8));
     for (&data) |*v| {
         v.* +=1;
     }
