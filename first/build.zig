@@ -16,7 +16,7 @@ pub fn build(b: *std.Build) void {
 
     const run_cmd = b.addRunArtifact(exe);
 
-    run_cmd.step.dependOn(b.getInstallStep());
+    //run_cmd.step.dependOn(b.getInstallStep());
 
     // zig build run -- arg1 arg2
     if (b.args) |args| {

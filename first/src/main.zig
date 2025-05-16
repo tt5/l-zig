@@ -95,6 +95,16 @@ pub fn main() !void {
     const binary: u8 = 0b00000001;
     std.debug.print("{}\n", .{binary});
 
+    const text = "one, two";
+    var iter = std.mem.tokenizeSequence(u8, text, ", ");
+    
+    std.debug.print("iter: {?s} {?s} {?s}\n",
+        .{
+            iter.next(),
+            iter.next(),
+            iter.next()
+        });
+
 }
 
 const expect = std.testing.expect;
